@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -43,14 +44,20 @@ namespace WebCrawler
                 { 
                     id = node.Attributes["data-threadid"].Value;
                     link = "https://social.msdn.microsoft.com/Forums/pt-BR/" + id;
-                    titulo = node.Descendants().First(x => x.Id.Equals("threadTitle_" + id)).InnerText;
-                    postagem = node.Descendants().First(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Equals("lastpost")).InnerText.Replace("\n", "").Replace("  ", "");
-                    exibicao = node.Descendants().First(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Equals("viewcount")).InnerText;
-                    resposta = node.Descendants().First(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Equals("replycount")).InnerText;
+                    titulo = WebUtility.HtmlDecode(node.Descendants().First(x => x.Id.Equals("threadTitle_" + id)).InnerText);
+                    postagem = WebUtility.HtmlDecode(node.Descendants().First(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Equals("lastpost")).InnerText.Replace("\n", "").Replace("  ", ""));
+                    exibicao = WebUtility.HtmlDecode(node.Descendants().First(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Equals("viewcount")).InnerText);
+                    resposta = WebUtility.HtmlDecode(node.Descendants().First(x => x.Attributes["class"] != null && x.Attributes["class"].Value.Equals("replycount")).InnerText);
                 }
                 if (!string.IsNullOrEmpty(titulo))
                     dataGridView1.Rows.Add(titulo, postagem, exibicao, resposta, link);
             }
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 4)
+                Process.Start(new ProcessStartInfo(dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString()));
         }
     }
 }
