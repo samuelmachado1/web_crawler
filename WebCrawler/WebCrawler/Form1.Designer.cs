@@ -89,6 +89,7 @@
             this.AtualizarButton.TabIndex = 1;
             this.AtualizarButton.Text = "Atualizar Lista";
             this.AtualizarButton.UseVisualStyleBackColor = true;
+            this.AtualizarButton.Click += new System.EventHandler(this.AtualizarButton_Click);
             // 
             // Form1
             // 

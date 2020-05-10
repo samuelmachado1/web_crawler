@@ -16,5 +16,10 @@ namespace WebCrawler
         {
             InitializeComponent();
         }
+
+        private void AtualizarButton_Click(object sender, EventArgs e)
+        {
+                 
+        }
     }
 }
